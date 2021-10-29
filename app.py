@@ -71,7 +71,7 @@ def total1(code):
 
 @app.route("/api/all_years")
 def total_years():
-    result = engine.execute(f"select geoname, description, year, dollars FROM us_expenditure")
+    result = engine.execute(f"select geoname, description, year, dollars FROM us_spend_df")
     rows = result.fetchall()
     result_list = []
     for r in rows:
