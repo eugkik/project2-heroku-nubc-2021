@@ -79,7 +79,7 @@ def total_years():
     return jsonify(result_list)
 
 @app.route("/api/all_years/<code>")
-def total_years(code):
+def total_years_state(code):
     result = engine.execute(f"select geoname, description, year, dollars FROM us_spend_df WHERE code = '{code}'")
     rows = result.fetchall()
     result_list = []
