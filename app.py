@@ -78,5 +78,14 @@ def total_years():
         result_list.append(dict(r))
     return jsonify(result_list)
 
+@app.route("/api/exp_by_year/<year>")
+def exp_by_year(year):
+    result = engine.execute(f"select geoname, dollars from us_spend_df where description = 'Personal consumption expenditures' AND year = '{year}'")
+    rows = result.fetchall()
+    result_list = []
+    for r in rows:
+        result_list.append(dict(r))
+    return jsonify(result_list)
+
 if __name__ == '__main__':
     app.run(debug=True)
