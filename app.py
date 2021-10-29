@@ -80,7 +80,7 @@ def total_years():
 
 @app.route("/api/all_years/<code>/<desc>")
 def total_years_state(code, desc):
-    result = engine.execute(f"select geoname, description, year, dollars FROM us_spend_df WHERE code = '{code}' AND description = '{desc}")
+    result = engine.execute(f"select geoname, description, year, dollars FROM us_spend_df WHERE code = '{code}' AND description = '{desc}'")
     rows = result.fetchall()
     result_list = []
     for r in rows:
