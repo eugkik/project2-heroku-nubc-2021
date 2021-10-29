@@ -78,9 +78,9 @@ def total_years():
         result_list.append(dict(r))
     return jsonify(result_list)
 
-@app.route("/api/all_years/<code>")
-def total_years_state(code):
-    result = engine.execute(f"select geoname, description, year, dollars FROM us_spend_df WHERE code = '{code}'")
+@app.route("/api/all_years/<code>/<desc>")
+def total_years_state(code, desc):
+    result = engine.execute(f"select geoname, description, year, dollars FROM us_spend_df WHERE code = '{code}' AND description = '{desc}")
     rows = result.fetchall()
     result_list = []
     for r in rows:
