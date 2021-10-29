@@ -1,10 +1,11 @@
 from flask import Flask, jsonify
 from sqlalchemy.engine import create_engine
+from flask_cors import CORS
 
 #engine = create_engine("sqlite:///DataFiles/SAEXP1")
 
 app = Flask(__name__)
-
+CORS(app)
 pw = 'TZFLAhpQ6P1tPJzfXg3MoUnfUIOcHcd2'
 
 #DATABASE_URI = f'postgresql+psycopg2://postgres:{pw}@localhost:5432/Project2_Dev'
