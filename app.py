@@ -69,5 +69,14 @@ def total1(code):
         result_list.append(dict(r))
     return jsonify(result_list)
 
+@app.route("/api/all_years")
+def total_years():
+    result = engine.execute(f"select geoname, description, year, dollars FROM us_expenditure")
+    rows = result.fetchall()
+    result_list = []
+    for r in rows:
+        result_list.append(dict(r))
+    return jsonify(result_list)
+
 if __name__ == '__main__':
     app.run(debug=True)
