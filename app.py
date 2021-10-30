@@ -119,10 +119,9 @@ def exp_by_year(year):
         result_list.append(dict(r))
     return jsonify(result_list)
 
-# Return state abbr, dollars for Personal Consumption for given year
 @app.route("/api/sub_by_state/<code>")
 def sub_by_state(code):
-    result = engine.execute(f"select code, year, description, dollars from us_spend_df where code = '{code}' AND (description = 'Durable goods' OR description = 'Nondurable goods' OR description = 'Household consumption expenditures (for services)' OR description = 'Final consumption expenditures of nonprofit institutions serving households (NPISHs)')")
+    result = engine.execute(f"select code, year, description, dollars from us_spend_df where code = '{code}' AND (description = 'Durable goods' OR description = 'Nondurable goods' OR description = 'Household consumption expenditures (for services)' OR description = 'Final consumption expenditures of nonprofit institutions serving households (NPISHs)') ORDER BY year")
     rows = result.fetchall()
     result_list = []
     for r in rows:
