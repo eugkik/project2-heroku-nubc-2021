@@ -66,7 +66,7 @@ def total2(code):
     return str(round(r[0]))
 
 # Schaefer
-# Same as above
+# Same as above as dict
 @app.route("/api/total1/<code>")
 def total1(code):
     result = engine.execute(f"select dollars from us_spend_df where code = '{code}' AND description = 'Personal consumption expenditures' AND year = 2019")
@@ -113,6 +113,16 @@ def total_by_years_state(code, desc, year):
 @app.route("/api/exp_by_year/<year>")
 def exp_by_year(year):
     result = engine.execute(f"select code, dollars from us_spend_df where description = 'Personal consumption expenditures' AND year = '{year}'")
+    rows = result.fetchall()
+    result_list = []
+    for r in rows:
+        result_list.append(dict(r))
+    return jsonify(result_list)
+
+# Return state abbr, dollars for Personal Consumption for given year
+@app.route("/api/sub_by_state/<code>")
+def sub_by_state(code):
+    result = engine.execute(f"select code, year, description, dollars from us_spend_df where code = '{code}' AND (description = 'Durable goods' OR description = 'Nondurable goods' OR description = 'Household consumption expenditures (for services)' OR description = 'Final consumption expenditures of nonprofit institutions serving households (NPISHs)')")
     rows = result.fetchall()
     result_list = []
     for r in rows:
