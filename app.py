@@ -137,5 +137,33 @@ def sub_by_state2(code):
         result_list.append(dict(r))
     return jsonify(result_list)
 
+@app.route("/api/all_data")
+def all_data2():
+ 
+    data_dict = {}
+    for year in range(1997,2020):
+        result = engine.execute(f"select description, dollars FROM us_spend_df where (year = {year} AND code = 'US') AND \
+            (description = 'Motor vehicles and parts' OR \
+            description = 'Furnishings and durable household equipment' OR \
+            description = 'Recreational goods and vehicles' OR \
+            description = 'Food and beverages purchased for off-premises consumption' OR \
+            description = 'Clothing and footwear' OR \
+            description = 'Gasoline and other energy goods' OR \
+            description = 'Housing and utilities' OR \
+            description = 'Health care' OR \
+            description = 'Transportation services' OR \
+            description = 'Recreation services' OR \
+            description = 'Food services and accommodations' OR \
+            description = 'Financial services and insurance')")
+        rows = result.fetchall()
+        result_list = []
+        for r in rows:
+            result_list.append(dict(r))
+        #year_dict = {year:result_list}
+
+        data_dict.update({year:result_list})
+
+    return jsonify(data_dict)
+
 if __name__ == '__main__':
     app.run(debug=True)
