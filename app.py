@@ -128,5 +128,14 @@ def sub_by_state(code):
         result_list.append(dict(r))
     return jsonify(result_list)
 
+@app.route("/api/sub_by_state2/<code>")
+def sub_by_state2(code):
+    result = engine.execute(f"select code, year, description, dollars from us_spend_df where code = '{code}' AND (description = 'Durable goods' OR description = 'Nondurable goods' OR description = 'Household consumption expenditures (for services)' OR description = 'Final consumption expenditures of nonprofit institutions serving households (NPISHs)') ORDER BY year, description")
+    rows = result.fetchall()
+    result_list = []
+    for r in rows:
+        result_list.append(dict(r))
+    return jsonify(result_list)
+
 if __name__ == '__main__':
     app.run(debug=True)
