@@ -1,14 +1,15 @@
 from flask import Flask, jsonify
 from sqlalchemy.engine import create_engine
 from flask_cors import CORS
-
-#engine = create_engine("sqlite:///DataFiles/SAEXP1")
+import os
 
 app = Flask(__name__)
-CORS(app)
-pw = 'TZFLAhpQ6P1tPJzfXg3MoUnfUIOcHcd2'
 
-#DATABASE_URI = f'postgresql+psycopg2://postgres:{pw}@localhost:5432/Project2_Dev'
+CORS(app)
+
+#pw = 'TZFLAhpQ6P1tPJzfXg3MoUnfUIOcHcd2'
+pw = os.getenv('PASSWORD')
+
 DATABASE_URI = f'postgresql+psycopg2://kwwhumda:{pw}@fanny.db.elephantsql.com:5432/kwwhumda'
 
 engine = create_engine(DATABASE_URI)
@@ -86,7 +87,6 @@ def total_years():
         result_list.append(dict(r))
     return jsonify(result_list)
 
-# Michael
 # Return state name, description, year, dollars given state abbr and description
 @app.route("/api/all_years/<code>/<desc>")
 def total_years_state(code, desc):
@@ -97,7 +97,6 @@ def total_years_state(code, desc):
         result_list.append(dict(r))
     return jsonify(result_list)
 
-# Michael
 # Return state name, description, year, dollars given state abbr, description, and year
 @app.route("/api/by_year/<code>/<desc>/<year>")
 def total_by_years_state(code, desc, year):
@@ -108,7 +107,6 @@ def total_by_years_state(code, desc, year):
         result_list.append(dict(r))
     return jsonify(result_list)
 
-# Schaefer
 # Return state abbr, dollars for Personal Consumption for given year
 @app.route("/api/exp_by_year/<year>")
 def exp_by_year(year):
@@ -119,6 +117,7 @@ def exp_by_year(year):
         result_list.append(dict(r))
     return jsonify(result_list)
 
+# Return  state abbr, year, description, dollars for main subcategories given state abbr
 @app.route("/api/sub_by_state/<code>")
 def sub_by_state(code):
     result = engine.execute(f"select code, year, description, dollars from us_spend_df where code = '{code}' AND (description = 'Durable goods' OR description = 'Nondurable goods' OR description = 'Household consumption expenditures (for services)' OR description = 'Final consumption expenditures of nonprofit institutions serving households (NPISHs)') ORDER BY year")
@@ -128,6 +127,7 @@ def sub_by_state(code):
         result_list.append(dict(r))
     return jsonify(result_list)
 
+# Same as above, sorted by year then description
 @app.route("/api/sub_by_state2/<code>")
 def sub_by_state2(code):
     result = engine.execute(f"select code, year, description, dollars from us_spend_df where code = '{code}' AND (description = 'Durable goods' OR description = 'Nondurable goods' OR description = 'Household consumption expenditures (for services)' OR description = 'Final consumption expenditures of nonprofit institutions serving households (NPISHs)') ORDER BY year, description")
@@ -137,6 +137,7 @@ def sub_by_state2(code):
         result_list.append(dict(r))
     return jsonify(result_list)
 
+# Return all subcategory dollars for all years and states
 @app.route("/api/all_data")
 def all_data2():
  
@@ -159,11 +160,10 @@ def all_data2():
         result_list = []
         for r in rows:
             result_list.append(dict(r))
-        #year_dict = {year:result_list}
 
         data_dict.update({year:result_list})
 
     return jsonify(data_dict)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
