@@ -1,3 +1,5 @@
+# Flask app deployed to Heroku
+
 from flask import Flask, jsonify
 from sqlalchemy.engine import create_engine
 from flask_cors import CORS
@@ -7,9 +9,13 @@ app = Flask(__name__)
 
 CORS(app)
 
-#pw = 'TZFLAhpQ6P1tPJzfXg3MoUnfUIOcHcd2'
+# ElephantSQL password stored in local config file
+#from config import pw
+
+# ElephantSQL password stored as Heroku environment variable
 pw = os.getenv('PASSWORD')
 
+# ElephantSQL server path
 DATABASE_URI = f'postgresql+psycopg2://kwwhumda:{pw}@fanny.db.elephantsql.com:5432/kwwhumda'
 
 engine = create_engine(DATABASE_URI)
