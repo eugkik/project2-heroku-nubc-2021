@@ -64,7 +64,6 @@ def fips(geo_fips):
     
     return jsonify(result_list)
 
-# Schaefer
 # Return dollars for Personal Consumption for 2019 given state abbr
 @app.route("/api/total2/<code>")
 def total2(code):
@@ -72,7 +71,6 @@ def total2(code):
     r = result.fetchone()
     return str(round(r[0]))
 
-# Schaefer
 # Same as above as dict
 @app.route("/api/total1/<code>")
 def total1(code):
